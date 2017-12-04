@@ -1,27 +1,43 @@
 package com.example.in2dm3_03.ud4menu;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
+
+    static final int REQUEST=0;
+    static final int OPCION_1 = 0;
+    private String mTexto;
+    private String mNombre;
+    private TextView mTNombre;
+    private EditText t1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        TextView text=(TextView)findViewById(R.id.textView);
+        t1=(EditText) findViewById(R.id.editText) ;
+        TextView text=(TextView)findViewById(R.id.textViewContextual);
+        mTNombre=(TextView)findViewById(R.id.textViewNombre);
 
+        registerForContextMenu(text);
         //ActionBar a=getSupportActionBar();
 
         //a.hide();
+    }
+
+    public void recogerTexto(){
+        mTexto= String.valueOf(t1.getText());
     }
 
     @Override
@@ -36,10 +52,37 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RESULT_OK) {
+            if (resultCode == REQUEST) {
+                if (mNombre != null) {
+                    mNombre=data.getStringExtra("texto");
+                }
+                rellenarNombre();
+            }
+        }
+    }
+
+    public void rellenarNombre(){
+        mTNombre.setText(mNombre);
+    }
+
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
         seleccionarOpcion(item);
         return true;    }
+
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        crearMenu(menu);
+    }
+
+    private void crearMenu(ContextMenu menu) {
+        MenuItem item1 = menu.add(Menu.NONE, OPCION_1, Menu.NONE,"Opcion 1"); //La segunda opcion es la ID
+    }
 
     private void seleccionarOpcion(MenuItem item){
         int itemId= item.getItemId();
@@ -47,11 +90,11 @@ public class MainActivity extends AppCompatActivity {
         switch (itemId){
             case R.id.cambiarActividad:
                 Toast.makeText(this,"Opcion 1 elegida",Toast.LENGTH_LONG ).show();
-               // recogerTexto();
+                recogerTexto();
                 Intent i1=new Intent(this, pantalla.class);
-              //  i1.putExtra("texto", mTexto);
+                i1.putExtra("texto", mTexto);
 
-                startActivity(i1);
+                startActivityForResult(i1,REQUEST);
                 break;
         }
     }

@@ -3,7 +3,9 @@ package com.example.in2dm3_03.ud4menu;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class pantalla extends AppCompatActivity {
     private String mNombre;

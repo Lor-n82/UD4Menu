@@ -3,6 +3,7 @@ package com.example.in2dm3_03.ud4menu;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     static final int REQUEST=0;
     static final int OPCION_1 = 0;
     private String mTexto;
-    private String mNombre;
+    private String mNombre="";
     private TextView mTNombre;
     private EditText t1;
 
@@ -52,14 +53,15 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+    //REVISAR
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RESULT_OK) {
-            if (resultCode == REQUEST) {
-                if (mNombre != null) {
-                    mNombre=data.getStringExtra("texto");
-                }
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST) {
+                mNombre = getIntent().getStringExtra("texto");
+                Log.d("prueba", mNombre + "Hay algo?");
                 rellenarNombre();
             }
         }
@@ -81,7 +83,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void crearMenu(ContextMenu menu) {
-        MenuItem item1 = menu.add(Menu.NONE, OPCION_1, Menu.NONE,"Opcion 1"); //La segunda opcion es la ID
+        MenuItem item1 = menu.add(Menu.NONE, OPCION_1, Menu.NONE,"cambio"); //La segunda opcion es la ID
+
+       /* Intent i1=new Intent(this, pantalla.class);
+        i1.putExtra("texto", mTexto);
+
+        startActivityForResult(i1,REQUEST);*/
     }
 
     private void seleccionarOpcion(MenuItem item){
@@ -89,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
 
         switch (itemId){
             case R.id.cambiarActividad:
-                Toast.makeText(this,"Opcion 1 elegida",Toast.LENGTH_LONG ).show();
+                Toast.makeText(this,"Cambiando de actividad",Toast.LENGTH_LONG ).show();
                 recogerTexto();
                 Intent i1=new Intent(this, pantalla.class);
                 i1.putExtra("texto", mTexto);

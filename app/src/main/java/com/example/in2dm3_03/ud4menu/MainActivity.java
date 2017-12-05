@@ -1,6 +1,7 @@
 package com.example.in2dm3_03.ud4menu;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,8 +16,9 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    static final int REQUEST=0;
+    static final int REQUEST=1;
     static final int OPCION_1 = 0;
+    static final int OPCION_2 = 1;
     private String mTexto;
     private String mNombre="";
     private TextView mTNombre;
@@ -60,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST) {
-                mNombre = getIntent().getStringExtra("texto");
+                mNombre = data.getStringExtra("texto");
                 Log.d("prueba", mNombre + "Hay algo?");
                 rellenarNombre();
             }
@@ -83,12 +85,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void crearMenu(ContextMenu menu) {
-        MenuItem item1 = menu.add(Menu.NONE, OPCION_1, Menu.NONE,"cambio"); //La segunda opcion es la ID
+        MenuItem item1 = menu.add(Menu.NONE, OPCION_1, Menu.NONE,"Cambiar a rojo"); //La segunda opcion es la ID
+        MenuItem item2 = menu.add(Menu.NONE, OPCION_2, Menu.NONE,"Cambiar a azul");
+        }
 
-       /* Intent i1=new Intent(this, pantalla.class);
-        i1.putExtra("texto", mTexto);
+    public boolean onContextItemSelected(MenuItem item) {
 
-        startActivityForResult(i1,REQUEST);*/
+        switch (item.getItemId()) {
+            case OPCION_1:
+                mTNombre.setTextColor(Color.RED);
+            case OPCION_2:
+                mTNombre.setTextColor(Color.BLUE);
+
+        }
+        return true;
     }
 
     private void seleccionarOpcion(MenuItem item){

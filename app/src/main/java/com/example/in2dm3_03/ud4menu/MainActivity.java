@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     static final int OPCION_2 = 1;
     private String mTexto;
     private String mNombre="";
+    private String cambioColor="";
     private TextView mTNombre;
     private EditText t1;
 
@@ -90,14 +91,24 @@ public class MainActivity extends AppCompatActivity {
         }
 
     public boolean onContextItemSelected(MenuItem item) {
+        Intent i1=new Intent(this,pantalla.class);
 
         switch (item.getItemId()) {
             case OPCION_1:
+                Log.d("mira", "Rojo");
                 mTNombre.setTextColor(Color.RED);
-            case OPCION_2:
-                mTNombre.setTextColor(Color.BLUE);
+                cambioColor="Color cambiado a Rojo";
+                i1.putExtra("cambioColor",cambioColor);
 
+                break;
+            case OPCION_2:
+                Log.d("mira", "Azul");
+                mTNombre.setTextColor(Color.BLUE);
+                cambioColor="Color cambiado a Azul";
+                i1.putExtra("cambioColor",cambioColor);
+                break;
         }
+        startActivity(i1);
         return true;
     }
 
